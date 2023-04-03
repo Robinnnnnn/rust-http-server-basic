@@ -1,45 +1,17 @@
+use http::Method;
+use http::Request;
+use server::Server; //user Server struct from the mod server
 
+mod http; //finds files/folders with modules 
+mod server;
 
 fn main() {
-
     let server = Server::new(String::from("127.0.0.1:8080"));
 
     server.run();
 }
 
-struct Server {
-    addr: String,
-
-}
-
-impl Server {
-    // Uppercase Self is an alias for the struct of this impl.
-    fn new(addr: String) -> Self {
-        Self {
-            addr
-        }
-    }
-
-    //methods always accept self as first parameter
-    fn run(self) {
-        println!("Listening on {}", self.addr)
-    }
-}
-
-struct Request {
-    path: String,
-    query_string: Option<String>,
-    method: Method, 
-}
-
-enum Method {
-    GET,
-    POST,
-    PUT,
-    DELETE,
-    HEAD,
-    CONNECT,
-    OPTIONS,
-    TRACE,
-    PATCH
-}
+//modules are private by default
+//other files are considered as modules in rust
+// when inserting modules as serperate files, you dont need to keep mod syntax,
+// you only need the contents of the module
