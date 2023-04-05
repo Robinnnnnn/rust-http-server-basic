@@ -23,6 +23,7 @@ impl Server {
 
             match listener.accept() {
                 Ok((mut stream, _)) => {
+                    //allocating a space in memory for use by our stream.read() function
                     let mut buffer = [0; 1024];
                     match stream.read(&mut buffer) {
                         Ok(_) => {

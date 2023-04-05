@@ -5,19 +5,19 @@ use std::error::Error;
 use std::fmt::{Result as FmtResult, Display, Debug, Formatter, write};
 use std::str::{self, Utf8Error};
 
-pub struct Request {
-    path: &str,
-    query_string: Option<&str>,
+pub struct Request<'buf> {
+    path: &'buf str,
+    query_string: Option<&'buf str>,
     method: Method, //super tells rust to go up one level to find the method module
 }
 
-impl Request {
+impl<'buf> Request<'buf>{
     fn from_byte_array(buf: &[u8]) -> Result<Self, String> {
         unimplemented!()
     }
 }
 
-impl TryFrom<&[u8]> for Request {
+impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
     type Error = ParseError;
 
 
@@ -25,7 +25,7 @@ impl TryFrom<&[u8]> for Request {
                         METHOD| PATH |Query Params
         Example Request: Get /search?name=abc&sort=1 HTTP/1.1
      */
-    fn try_from(buf: &[u8]) -> Result<Self, Self::Error> {
+    fn try_from(buf: &'buf [u8]) -> Result<Request<'buf>, Self::Error> {
         
        let request = str::from_utf8(buf)?;
         
