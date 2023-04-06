@@ -1,4 +1,6 @@
-use std::{str::FromStr, num::ParseIntError};
+use std::{str::FromStr};
+
+#[derive(Debug)]
 pub enum Method {
     GET,
     POST,

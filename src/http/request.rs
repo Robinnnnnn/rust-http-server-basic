@@ -1,13 +1,15 @@
 
 use super::method::{Method, MethodError};
+use super::{QueryString};
 use std::convert::TryFrom;
 use std::error::Error;
-use std::fmt::{Result as FmtResult, Display, Debug, Formatter, write};
+use std::fmt::{Result as FmtResult, Display, Debug, Formatter};
 use std::str::{self, Utf8Error};
 
+#[derive(Debug)]
 pub struct Request<'buf> {
     path: &'buf str,
-    query_string: Option<&'buf str>,
+    query_string: Option<QueryString<'buf>>,
     method: Method, //super tells rust to go up one level to find the method module
 }
 
@@ -40,16 +42,16 @@ impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
         }
 
         let method: Method =  method.parse()?;
-        let mut query_string:Option<&str>= None;
+        let mut query_string= None;
 
         // if Some() would return anything other than None, do something
         if let Some(i) = path.find('?') {
-            query_string = Some(&path[i+1..]);
+            query_string = Some(QueryString::from(&path[i+1..]));
             path = &path[..i];
         }
 
         Ok(Self{
-            path: path,
+            path,
             query_string, //Some() is an option
             method,
         })

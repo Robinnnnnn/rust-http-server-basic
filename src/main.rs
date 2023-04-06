@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+
+
 use http::Method;
 use http::Request;
 use server::Server; //user Server struct from the mod server
